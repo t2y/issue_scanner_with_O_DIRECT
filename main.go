@@ -31,11 +31,11 @@ func Read(path string) {
 	data := make([]byte, bufSize)
 	for {
 		n, err := f.Read(data)
-		log.Print(n, ", ", string(data))
 		if err != nil {
 			log.Println("err: ", err)
 			break
 		}
+		log.Print(n, ", ", string(data))
 	}
 
 	return
