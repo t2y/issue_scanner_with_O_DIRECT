@@ -11,7 +11,7 @@ import (
 func Read(path string) {
 	f, err := directio.OpenFile(path, os.O_RDONLY, 0)
 	if err != nil {
-		log.Fatal("error: ", err)
+		log.Println("error: ", err)
 	}
 	defer f.Close()
 
@@ -21,7 +21,7 @@ func Read(path string) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal("error: ", err)
+		log.Println("error: ", err)
 	}
 
 	return
