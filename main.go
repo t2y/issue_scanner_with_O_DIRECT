@@ -18,7 +18,7 @@ func Read(path string) {
 
 	if direct {
 		f, err = os.OpenFile(path, os.O_RDONLY|syscall.O_DIRECT, 0)
-		bufSize = 524288
+		bufSize = 512
 	} else {
 		f, err = os.OpenFile(path, os.O_RDONLY, 0)
 		bufSize = 100
