@@ -1,1 +1,1 @@
-# issue_scanner_with_O_DIRECT
+# issue_scanner_with_O_DIRECT## learn how to read a file with O_DIRECT```bash$ makego build -o main main.go$ ./main --helpUsage of ./main:  -direct    set O_DIRECT```
