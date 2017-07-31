@@ -1,27 +1,38 @@
 package main
 
 import (
-	"bufio"
+	"flag"
 	"log"
 	"os"
-
-	"github.com/ncw/directio"
+	"syscall"
 )
 
+var direct bool
+
 func Read(path string) {
-	f, err := directio.OpenFile(path, os.O_RDONLY, 0)
+	var (
+		f   *os.File
+		err error
+	)
+
+	if direct {
+		f, err = os.OpenFile(path, os.O_RDONLY|syscall.O_DIRECT, 0)
+	} else {
+		f, err = os.OpenFile(path, os.O_RDONLY, 0)
+	}
 	if err != nil {
 		log.Println("error: ", err)
 	}
 	defer f.Close()
 
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		log.Println(scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Println("error: ", err)
+	data := make([]byte, 100)
+	for {
+		n, err := f.Read(data)
+		log.Print(n, ", ", string(data))
+		if err != nil {
+			log.Println("err: ", err)
+			break
+		}
 	}
 
 	return
@@ -29,6 +40,9 @@ func Read(path string) {
 
 func main() {
 	log.Println("start")
+
+	flag.BoolVar(&direct, "direct", false, "set O_DIRECT")
+	flag.Parse()
 
 	Read("test.txt")
 
